@@ -21,31 +21,29 @@ const generateRandomIsPrime = (): boolean => {
 
 validateUserRouter.get("/validate-user", (req: any, res: any) => {
   try {
-    const { rut } = req.query;
+    const { rut, email } = req.query;
 
-    // Validar que se proporcione el RUT
-    if (!rut || typeof rut !== "string") {
+    // Validar que al menos uno de los dos parámetros esté presente
+    if (!rut && !email) {
       return res.status(400).json({
-        code: "PR400",
-        message: "RUT es requerido como parámetro de consulta",
-        // data: {
-        //   isPrime: generateRandomIsPrime(),
-        // },
-      } as ValidateUserResponse);
+        error: "Debe proporcionar al menos un parámetro: rut o email",
+      });
     }
 
-    // Limpiar el RUT (remover espacios y convertir a mayúsculas para el dígito K)
-    const cleanRut = rut.trim().replace(/\./g, "");
+    if (rut) {
+      // Limpiar el RUT (remover espacios y convertir a mayúsculas para el dígito K)
+      const cleanRut = rut.trim().replace(/\./g, "");
 
-    // Validar formato del RUT si contiene guión
-    if (cleanRut.includes("-") && !validateRut(cleanRut)) {
-      return res.status(400).json({
-        code: "PR400",
-        message: "Formato de RUT inválido",
-        // data: {
-        //   isPrime: generateRandomIsPrime(),
-        // },
-      } as ValidateUserResponse);
+      // Validar formato del RUT si contiene guión
+      if (cleanRut.includes("-") && !validateRut(cleanRut)) {
+        return res.status(400).json({
+          code: "PR400",
+          message: "Formato de RUT inválido",
+          // data: {
+          //   isPrime: generateRandomIsPrime(),
+          // },
+        } as ValidateUserResponse);
+      }
     }
 
     // Usuario encontrado - respuesta exitosa
@@ -54,6 +52,7 @@ validateUserRouter.get("/validate-user", (req: any, res: any) => {
       message: "Success",
       data: {
         rut,
+        email,
         isPrime: generateRandomIsPrime(),
       },
     } as ValidateUserResponse);
