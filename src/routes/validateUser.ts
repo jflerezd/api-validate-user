@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import { validateRut } from "../utils/rutValidator";
 
 export const validateUserRouter = Router();
@@ -18,7 +18,7 @@ const generateRandomIsPrime = (): boolean => {
   return Math.random() >= 0.5;
 };
 
-validateUserRouter.get("/validate-user", (req: Request, res: Response) => {
+validateUserRouter.get("/validate-user", (req: any, res: any) => {
   try {
     const { rut } = req.query;
 

@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import { authMiddleware } from "./middleware/authMiddleware";
 import { validateUserRouter } from "./routes/validateUser";
@@ -13,7 +13,9 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 // Middleware de autenticación para todas las rutas de la API
-app.use("/api", authMiddleware);
+const middleware: (req: Request, res: Response, next: NextFunction) => void =
+  authMiddleware;
+app.use("/api", middleware);
 
 // Rutas
 app.use("/api/v1", validateUserRouter);
