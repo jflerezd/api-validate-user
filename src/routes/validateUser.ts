@@ -7,6 +7,7 @@ interface ValidateUserResponse {
   code: string;
   message: string;
   data: {
+    rut: string;
     isPrime: boolean;
   };
 }
@@ -27,9 +28,9 @@ validateUserRouter.get("/validate-user", (req: any, res: any) => {
       return res.status(400).json({
         code: "PR400",
         message: "RUT es requerido como parámetro de consulta",
-        data: {
-          isPrime: generateRandomIsPrime(),
-        },
+        // data: {
+        //   isPrime: generateRandomIsPrime(),
+        // },
       } as ValidateUserResponse);
     }
 
@@ -41,9 +42,9 @@ validateUserRouter.get("/validate-user", (req: any, res: any) => {
       return res.status(400).json({
         code: "PR400",
         message: "Formato de RUT inválido",
-        data: {
-          isPrime: generateRandomIsPrime(),
-        },
+        // data: {
+        //   isPrime: generateRandomIsPrime(),
+        // },
       } as ValidateUserResponse);
     }
 
@@ -61,9 +62,13 @@ validateUserRouter.get("/validate-user", (req: any, res: any) => {
     return res.status(500).json({
       code: "PR500",
       message: "Error interno del servidor",
-      data: {
-        isPrime: generateRandomIsPrime(),
-      },
+      // data: {
+      //   isPrime: generateRandomIsPrime(),
+      // },
     } as ValidateUserResponse);
   }
+});
+
+validateUserRouter.get("/ping", (req: any, res: any) => {
+  res.status(200).send("OK");
 });

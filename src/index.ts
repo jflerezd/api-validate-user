@@ -2,6 +2,8 @@ import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import { authMiddleware } from "./middleware/authMiddleware";
 import { validateUserRouter } from "./routes/validateUser";
+import cron from "node-cron";
+import { autoPing } from "./ping";
 
 // Cargar variables de entorno
 dotenv.config();
@@ -54,10 +56,16 @@ app.use(
   }
 );
 
+cron.schedule("*/1 * * * *", () => {
+  console.log("Ejecutando auto-ping...");
+  autoPing();
+});
+
 app.listen(port, () => {
   console.log(`🚀 Servidor corriendo en http://localhost:${port}`);
   console.log(
     `📊 Endpoint principal: http://localhost:${port}/api/v1/validate-user?rut=233555`
   );
   console.log(`💚 Health check: http://localhost:${port}/health`);
+  autoPing();
 });
