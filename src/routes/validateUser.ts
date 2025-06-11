@@ -37,10 +37,16 @@ validateUserRouter.get("/validate-user", (req: any, res: any) => {
     }
 
     // Validar que los parámetros no sean cadenas vacías
-    if ((rut && rut.trim() === "") || (email && email.trim() === "")) {
+    if (rut && rut.trim() === "") {
       return res.status(400).json({
         code: "PR400",
-        message: "Los parámetros rut y email no pueden estar vacíos",
+        message: "El parámetro rut no puede estar vacío",
+      });
+    }
+    if (email && email.trim() === "") {
+      return res.status(400).json({
+        code: "PR400",
+        message: "El parámetro email no puede estar vacío",
       });
     }
 
