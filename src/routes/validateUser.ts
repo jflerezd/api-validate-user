@@ -31,7 +31,16 @@ validateUserRouter.get("/validate-user", (req: any, res: any) => {
     // Validar que al menos uno de los dos parámetros esté presente
     if (!rut && !email) {
       return res.status(400).json({
-        error: "Debe proporcionar al menos un parámetro: rut o email",
+        code: "PR400",
+        message: "Debe proporcionar al menos un parámetro: rut o emai",
+      });
+    }
+
+    // Validar que los parámetros no sean cadenas vacías
+    if ((rut && rut.trim() === "") || (email && email.trim() === "")) {
+      return res.status(400).json({
+        code: "PR400",
+        message: "Los parámetros rut y email no pueden estar vacíos",
       });
     }
 
@@ -51,12 +60,12 @@ validateUserRouter.get("/validate-user", (req: any, res: any) => {
       }
     }
 
-      if (email && !isValidEmail(email)) {
-        return res.status(400).json({
-          code: "PR400",
-          message: "El formato del email no es válido",
-        });
-      }
+    if (email && !isValidEmail(email)) {
+      return res.status(400).json({
+        code: "PR400",
+        message: "El formato del email no es válido",
+      });
+    }
 
     // Usuario encontrado - respuesta exitosa
     return res.status(200).json({
