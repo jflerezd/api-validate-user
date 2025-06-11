@@ -51,19 +51,13 @@ validateUserRouter.get("/validate-user", (req: any, res: any) => {
     }
 
     console.log("validate", email);
-    if (email && email.trim() === "") {
-      return res.status(400).json({
-        code: "PR400",
-        message: "El parámetro email no puede estar vacío",
-      });
-    }
 
     if (rut) {
       // Limpiar el RUT (remover espacios y convertir a mayúsculas para el dígito K)
       const cleanRut = rut.trim().replace(/\./g, "");
 
       // Validar formato del RUT si contiene guión
-      if (cleanRut.includes("-") && !validateRut(cleanRut)) {
+      if (!validateRut(cleanRut)) {
         return res.status(400).json({
           code: "PR400",
           message: "Formato de RUT inválido",

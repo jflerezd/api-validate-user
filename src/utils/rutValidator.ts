@@ -7,25 +7,8 @@ export const validateRut = (rut: string): boolean => {
   // Remover espacios y convertir a minúsculas
   const cleanRut = rut.replace(/\s/g, "").toLowerCase();
 
-  // Verificar formato básico (números-dígito verificador)
-  const rutRegex = /^[0-9]+-[0-9kK]$/;
-  if (!rutRegex.test(cleanRut)) {
-    return false;
-  }
-
-  // Separar número y dígito verificador
-  const [rutNumber, checkDigit] = cleanRut.split("-");
-
-  // Verificar que el número tenga al menos 7 dígitos
-  if (rutNumber.length < 7) {
-    return false;
-  }
-
-  // Calcular dígito verificador
-  const calculatedCheckDigit = calculateCheckDigit(rutNumber);
-
-  // Comparar con el dígito proporcionado
-  return calculatedCheckDigit === checkDigit;
+  const rutRegex = /^\d{1,8}-[\dkK]$/;
+  return rutRegex.test(cleanRut);
 };
 
 /**
