@@ -19,6 +19,11 @@ const generateRandomIsPrime = (): boolean => {
   return Math.random() >= 0.5;
 };
 
+const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
 validateUserRouter.get("/validate-user", (req: any, res: any) => {
   try {
     const { rut, email } = req.query;
@@ -45,6 +50,13 @@ validateUserRouter.get("/validate-user", (req: any, res: any) => {
         } as ValidateUserResponse);
       }
     }
+
+      if (email && !isValidEmail(email)) {
+        return res.status(400).json({
+          code: "PR400",
+          message: "El formato del email no es válido",
+        });
+      }
 
     // Usuario encontrado - respuesta exitosa
     return res.status(200).json({
