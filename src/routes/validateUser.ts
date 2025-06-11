@@ -37,12 +37,20 @@ validateUserRouter.get("/validate-user", (req: any, res: any) => {
     }
 
     // Validar que los parámetros no sean cadenas vacías
-    if (rut && rut.trim() === "") {
+    if (rut === "") {
       return res.status(400).json({
         code: "PR400",
         message: "El parámetro rut no puede estar vacío",
       });
     }
+
+    // Validar email si está presente
+
+    if (email === "") {
+      return res.status(400).json({ error: "El email no puede estar vacío" });
+    }
+
+    console.log("validate", email);
     if (email && email.trim() === "") {
       return res.status(400).json({
         code: "PR400",
